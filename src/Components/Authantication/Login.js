@@ -1,13 +1,13 @@
 
 import { useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "./SignUp.modules.css";
 
-
 const AuthForm = () => {
+  const navigate=useNavigate();
   const [isSending, setIsSending] = useState(false);
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
-  const cnfPasswordInputRef= useRef();
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -15,7 +15,7 @@ const AuthForm = () => {
     const enteredPassword = passwordInputRef.current.value;
     setIsSending(true);
     
-    fetch("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDPexDNdjOMbM7eoDYU1-DP6ytLvuzTifQ", {
+    fetch("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDPexDNdjOMbM7eoDYU1-DP6ytLvuzTifQ", {
       method: "POST",
       body: JSON.stringify({
         email: enteredEmail,
@@ -29,16 +29,22 @@ const AuthForm = () => {
       .then((res) => {
         setIsSending(false);
         if (res.ok) {
-          console.log("User registered successfully!");
+          navigate("/");
+          console.log("Successfully LoggedIn!");
+
           return res.json();
       } else {
           return res.json().then(() => {
-            let errorMessage = "Failed!";
-            alert(errorMessage);
+            let errorMessage = "Authentication Failed!";
             throw new Error(errorMessage);
           });
         }
+      }).then((data) => {
+        localStorage.setItem('token',data.idToken);
+        localStorage.setItem('email',enteredEmail);
+
       })
+      .catch((err) => alert(err.message));
   };
 
   return (
@@ -62,20 +68,13 @@ const AuthForm = () => {
                   <input type="password" id="form3Example4cg" className="form-control form-control-lg" required ref={passwordInputRef}/>
                   <label className="form-label" htmlFor="form3Example4cg">Password</label>
                 </div>
-
-                <div className="form-outline mb-4">
-                  <input type="password" id="form3Example4cdg" className="form-control form-control-lg" required ref={cnfPasswordInputRef}/>
-                  <label className="form-label" htmlFor="form3Example4cdg">Repeat your password</label>
-                </div>
-
                 <div className="d-flex justify-content-center">
                   <button type="button"
-                    className="btn btn-success btn-block btn-lg gradient-custom-4 text-body" onClick={submitHandler}>Register</button>
+                    className="btn btn-success btn-block btn-lg gradient-custom-4 text-body" onClick={submitHandler}>Login</button>
                 </div>
 
-                <p className="text-center text-muted mt-5 mb-0">Have already an account? <a href="#!"
-                    className="fw-bold text-body"><u>Login here</u></a></p>
-
+                <p className="text-center text-muted mt-5 mb-0">New to this page?<Link to="/signup"
+                    className="fw-bold text-body"><u>SignUp here</u></Link></p>
               </form>
               {isSending?<p className="centered">Sending Request...</p>:''}
             </div>
