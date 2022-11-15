@@ -68,6 +68,8 @@ const AuthForm = () => {
                   <input type="password" id="form3Example4cg" className="form-control form-control-lg" required ref={passwordInputRef}/>
                   <label className="form-label" htmlFor="form3Example4cg">Password</label>
                 </div>
+                <p className="text-center text-muted mt-5 mb-0"><Link to="/forgot-password"
+                    className="fw-bold text-body"><u>Forgot Password</u></Link></p>
                 <div className="d-flex justify-content-center">
                   <button type="button"
                     className="btn btn-success btn-block btn-lg gradient-custom-4 text-body" onClick={submitHandler}>Login</button>
