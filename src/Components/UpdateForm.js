@@ -1,7 +1,33 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 const UpdateForm = () => {
     const [isSending,setIsSending]=useState(false);
+    const [formData,setFormData] = useState([]);
+    useEffect(()=>{
+      fetch("https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyDPexDNdjOMbM7eoDYU1-DP6ytLvuzTifQ", {
+        method: "POST",
+        body: JSON.stringify({
+          idToken:token,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((res)=>{
+        if(res.ok){
+          console.log("Done");
+          return res.json();
+        }
+        else {
+          return res.json().catch((err) => {
+            let errorMessage = "Failed!";
+            alert(errorMessage);
+            throw new Error(err);
+          });
+        }
+      }).then((res)=>{
+        setFormData(res);
+      })
+    },[])
     const nameInputRef=useRef();
     const profileInputRef = useRef();
     const token = localStorage.getItem('token');
@@ -49,12 +75,12 @@ const UpdateForm = () => {
   
                 <form >
                   <div className="form-outline mb-4">
-                    <input type="text" id="name" className="form-control form-control-lg" required ref={nameInputRef}/>
+                    <input type="text" id="name" className="form-control form-control-lg" defaultValue={formData.displayName} required ref={nameInputRef}/>
                     <label className="form-label" htmlFor="name">Full Name</label>
                   </div>
   
                   <div className="form-outline mb-4">
-                    <input type="text" id="profile" className="form-control form-control-lg" required ref={profileInputRef}/>
+                    <input type="text" id="profile" className="form-control form-control-lg" defaultValue={formData.photoUrl} required ref={profileInputRef}/>
                     <label className="form-label" htmlFor="profile">Profile Photo Url</label>
                   </div>
 
@@ -75,4 +101,4 @@ const UpdateForm = () => {
   )
 }
 
-export default UpdateForm
+export default UpdateForm;
