@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import UpdateForm from "./UpdateForm";
 
-const Home = () => {
+const UpdateProfile = () => {
   return (
     <>
       <div style={{display:'flex',justifyContent:'space-between'}}>
@@ -11,12 +12,13 @@ const Home = () => {
           </i>
         </span>
         <span>
-          Your profile is incomplete.<Link to="/updateProfile">Complete now</Link>
+          Your profile is incomplete.<Link>Complete now</Link>
         </span>
       </div>
       <hr />
+      <UpdateForm/>
     </>
   );
 };
 
-export default Home;
+export default UpdateProfile;
