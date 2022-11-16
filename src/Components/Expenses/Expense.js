@@ -1,27 +1,49 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import ExpenseForm from "./ExpenseForm";
 import ExpenseItems from "./ExpenseItems";
 
-const DUMMY_EXPENSES = [
-  {
-    id: "e1",
-    cat: "Fuel",
-    amount: 94.12,
-    desc: "Toilet Paper",
-  },
-  { id: "e2", desc: "New TV", amount: 799.49, cat: "Electricity" },
-];
+const DUMMY_EXPENSE = [
+  {amount:100,desc:"Bike Petrol",cat:"Fuel"},
+  {amount:200,desc:"BreakFast",cat:"Food"}
+]
 
 const Expense = () => {
-  const [expenses, setExpenses] = useState(DUMMY_EXPENSES);
+  const [expenses, setExpenses] = useState(DUMMY_EXPENSE);
 
-  const addExpenseHandler = (expense) => {
+  useEffect(() => {
+    axios
+      .get(`https://expensetracker-b0ad6-default-rtdb.firebaseio.com/expense.json`)
+      .then((res) => {
+        console.log(res.data);
+        // const getExpense = (Object.values(res.data));
+        Object.values(res.data).forEach((val)=>{
+          setExpenses((prevExpense) => {
+            return [...prevExpense,val];
+          });
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },[]);
+
+    const addExpenseHandler = (expense) => {
     setExpenses((prevExpense) => {
       return [...prevExpense,expense];
     });
-    console.log("Add Expense", expense);
-  };
-  console.log(expenses);
+    axios
+    .post("https://expensetracker-b0ad6-default-rtdb.firebaseio.com/expense.json",expense)
+     
+      .then((res) => {
+        if (res.ok) {
+          console.log("Send");
+          return res.json();
+      }}).catch((err) => {
+            
+            throw new Error(err);
+          });
+    }
   return (
     <>
       <section
