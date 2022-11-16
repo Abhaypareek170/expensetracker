@@ -1,9 +1,11 @@
 
-import { useRef, useState } from "react";
+import { useRef, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import AuthContext from '../../store/AuthContext'
 import "./SignUp.modules.css";
 
 const AuthForm = () => {
+  const authCntx = useContext(AuthContext);
   const navigate=useNavigate();
   const [isSending, setIsSending] = useState(false);
   const emailInputRef = useRef();
@@ -29,9 +31,7 @@ const AuthForm = () => {
       .then((res) => {
         setIsSending(false);
         if (res.ok) {
-          navigate("/");
           console.log("Successfully LoggedIn!");
-
           return res.json();
       } else {
           return res.json().then(() => {
@@ -40,8 +40,8 @@ const AuthForm = () => {
           });
         }
       }).then((data) => {
-        localStorage.setItem('token',data.idToken);
-        localStorage.setItem('email',enteredEmail);
+        authCntx.login(data.idToken);
+        navigate("/");
 
       })
       .catch((err) => alert(err.message));
@@ -56,7 +56,7 @@ const AuthForm = () => {
         <div className="col-12 col-md-9 col-lg-7 col-xl-6">
           <div className="card" style={{borderRadius: "15px"}}>
             <div className="card-body p-5">
-              <h2 className="text-uppercase text-center mb-5">Create an account</h2>
+              <h2 className="text-uppercase text-center mb-5">Login</h2>
 
               <form >
                 <div className="form-outline mb-4">

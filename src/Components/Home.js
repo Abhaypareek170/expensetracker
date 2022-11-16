@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import AuthContext from "../store/AuthContext";
 
 const Home = () => {
+  const authCntx = useContext(AuthContext);
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
   const logoutHandler = (e)=>{
     e.preventDefault();
-    localStorage.removeItem('email');
-    localStorage.removeItem('token')
+    authCntx.logout();
     navigate('/login');
   }
   const emailVerificationHandler = (e) =>{
