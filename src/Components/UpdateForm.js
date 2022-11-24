@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 const UpdateForm = () => {
     const [isSending,setIsSending]=useState(false);
     const [formData,setFormData] = useState([]);
+    const token = localStorage.getItem('token');
     useEffect(()=>{
       fetch("https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyDPexDNdjOMbM7eoDYU1-DP6ytLvuzTifQ", {
         method: "POST",
@@ -27,10 +28,10 @@ const UpdateForm = () => {
       }).then((res)=>{
         setFormData(res);
       })
-    },[])
+    },[token])
     const nameInputRef=useRef();
     const profileInputRef = useRef();
-    const token = localStorage.getItem('token');
+    
     const submitHandler = (event) => {
         event.preventDefault();
         const enteredName = nameInputRef.current.value;

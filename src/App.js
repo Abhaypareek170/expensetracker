@@ -5,22 +5,19 @@ import Home from "./Components/Home";
 import UpdateProfile from "./Components/UpdateProfile";
 import ForgotPassword from "./Components/Authantication/ForgotPassword";
 import Expense from "./Components/Expenses/Expense";
-import AuthContextProvider from "./store/AuthContextProvider";
 import Protected from "./Components/Pages/Protected";
 
 function App() {
   return (
     <BrowserRouter>
-    <AuthContextProvider>
       <Routes>
         <Route path="/signup" element={<SignUp/>}></Route>
         <Route path="/login" element={<Login/>}></Route>
-        <Route path="/" element={<Home/>}></Route>
+        <Route path="/" element={<Protected Component={Home}/>}></Route>
         <Route path="/updateProfile" element={<UpdateProfile/>}></Route>
         <Route path="/forgot-password" element={<ForgotPassword/>}></Route>
         <Route path="/expenses" element={<Protected Component={Expense}/>}></Route>
       </Routes>
-      </AuthContextProvider>
     </BrowserRouter>
   );
 }

@@ -1,7 +1,18 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 // import expenseImage from '../../assets/images/Expense.png'
 
 const ExpenseForm = (props) => {
+  const [descInput,setDescInput] = useState('');
+  const [amountInput,setAmountInput]=useState('');
+  const [catInput, setCatInput] = useState('');
+
+   useEffect(()=>{
+    if(props.expense){
+      setAmountInput(props.expense.amount);
+      setCatInput(props.expense.cat);
+      setDescInput(props.expense.desc);
+    }
+   },[props.expense])
     const amountInputRef = useRef();
     const descInputRef = useRef();
     const catInputRef = useRef();
@@ -17,23 +28,22 @@ const ExpenseForm = (props) => {
             desc:enteredDesc,
             cat:enteredCat
         }
-        props.onAddExpense(expense);
+        props.expense?props.onEditExpense(props.expense,expense,props.id):props.onAddExpense(expense);
     }
   return (
-    
     <form >
     <div className="form-outline mb-4">
-      <input type="number" id="amount" className="form-control form-control-lg" ref={amountInputRef} required  />
+      <input type="number" id="amount" className="form-control form-control-lg" defaultValue={amountInput} ref={amountInputRef} required  />
       <label className="form-label" htmlFor="amount">Spend Amount</label>
     </div>
 
     <div className="form-outline mb-4">
-      <input type="text" id="desc" className="form-control form-control-lg" ref={descInputRef} required />
+      <input type="text" id="desc" className="form-control form-control-lg" defaultValue={descInput} ref={descInputRef} required />
       <label className="form-label" htmlFor="desc">Description</label>
     </div>
     <div className="form-outline mb-4">
       <label className="form-label" htmlFor="desc">Category</label>
-    <select id="cat" name="cat" ref={catInputRef}>
+    <select id="cat" name="cat" ref={catInputRef}  defaultValue={catInput}>
         <option value="Electricity">Electricity</option>
         <option value="Food">Food</option>
         <option value="Fuel">Fuel</option>

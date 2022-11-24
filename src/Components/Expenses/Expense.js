@@ -1,43 +1,59 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import ExpenseForm from "./ExpenseForm";
 import ExpenseItems from "./ExpenseItems";
+import { expenseActions } from "../../store/expenses";
 
-const DUMMY_EXPENSE = [
-  {amount:100,desc:"Bike Petrol",cat:"Fuel"},
-  {amount:200,desc:"BreakFast",cat:"Food"}
-]
 
 const Expense = () => {
-  const [expenses, setExpenses] = useState(DUMMY_EXPENSE);
+  const dispatch = useDispatch();
+  const [keys,setKeys] = useState();
+  const expenses = useSelector(state=>state.expense.expenses);
 
-  useEffect(() => {
-    axios
-      .get(`https://expensetracker-b0ad6-default-rtdb.firebaseio.com/expense.json`)
-      .then((res) => {
-        console.log(res.data);
-        // const getExpense = (Object.values(res.data));
-        Object.values(res.data).forEach((val)=>{
-          setExpenses((prevExpense) => {
-            return [...prevExpense,val];
-          });
-        });
-      })
+    const fetchExpenses = async() =>{
+      const res = await axios.get(`https://expensetracker-b0ad6-default-rtdb.firebaseio.com/expense.json`)
       .catch((err) => {
         console.log(err);
-      });
-  },[]);
+      });  
+      setKeys(res.data);
+      Object.values(res.data).forEach(val=>{
+        dispatch(expenseActions.setExpense(val))
+      })
+       
+      }
+    useEffect(() => {
+      fetchExpenses();
+    },[]);
 
     const addExpenseHandler = (expense) => {
-    setExpenses((prevExpense) => {
-      return [...prevExpense,expense];
-    });
+      dispatch(expenseActions.addExpense(expense));
     axios
     .post("https://expensetracker-b0ad6-default-rtdb.firebaseio.com/expense.json",expense)
      
       .then((res) => {
         if (res.ok) {
           console.log("Send");
+          return res.json();
+      }}).catch((err) => {
+            
+            throw new Error(err);
+          });
+    }
+    const deleteExpenseHandler = (expense)=>{
+     dispatch(expenseActions.deleteExpense(expense));
+      console.log("delete")
+    }
+    const editExpenseHandler = (expense,id)=>{
+      console.log("edit called")
+      // let newExpenses = [...expense];
+      // let index = newExpenses.findIndex(data);
+      // newExpenses[index] = expense;
+      // setExpenses(newExpenses);
+      // dispatch(expenseActions.editExpense(expense));
+      axios.put(`https://expensetracker-b0ad6-default-rtdb.firebaseio.com/expense/${id}.json`,expense).then((res) => {
+        if (res.ok) {
+          console.log("Updated");
           return res.json();
       }}).catch((err) => {
             
@@ -61,10 +77,10 @@ const Expense = () => {
                     <h2 className="text-uppercase text-center mb-5">
                       Add Expense
                     </h2>
-                    <ExpenseForm onAddExpense={addExpenseHandler} />
+                    <ExpenseForm onAddExpense={addExpenseHandler}  onEditExpense={editExpenseHandler}/>
                     <ul>
                     {expenses.map((expense)=>(
-                        <ExpenseItems key={expense.desc} expense={expense}/>
+                        <ExpenseItems key={expense.desc} keys={keys} expense={expense} onDelete={deleteExpenseHandler} onEditExpense={editExpenseHandler}/>
                     ))}
                     </ul>
                   </div>

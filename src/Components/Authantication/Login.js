@@ -1,11 +1,12 @@
 
-import { useRef, useState, useContext } from "react";
+import { useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import AuthContext from '../../store/AuthContext'
+import { authActions } from "../../store/auth";
 import "./SignUp.modules.css";
 
 const AuthForm = () => {
-  const authCntx = useContext(AuthContext);
+  const dispatch = useDispatch();
   const navigate=useNavigate();
   const [isSending, setIsSending] = useState(false);
   const emailInputRef = useRef();
@@ -40,7 +41,8 @@ const AuthForm = () => {
           });
         }
       }).then((data) => {
-        authCntx.login(data.idToken);
+        localStorage.setItem('token',data.idToken);
+        dispatch(authActions.login(data.idToken));
         navigate("/");
 
       })
