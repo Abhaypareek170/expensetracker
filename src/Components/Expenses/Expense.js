@@ -7,9 +7,12 @@ import { expenseActions } from "../../store/expenses";
 
 
 const Expense = () => {
+  const [item, setItem] = useState()
   const dispatch = useDispatch();
   const [keys,setKeys] = useState();
+  const [id,setId]=useState();
   const expenses = useSelector(state=>state.expense.expenses);
+  const amount = useSelector(state=>state.expense.amount);
 
     const fetchExpenses = async() =>{
       const res = await axios.get(`https://expensetracker-b0ad6-default-rtdb.firebaseio.com/expense.json`)
@@ -25,6 +28,7 @@ const Expense = () => {
     useEffect(() => {
       fetchExpenses();
     },[]);
+    
 
     const addExpenseHandler = (expense) => {
       dispatch(expenseActions.addExpense(expense));
@@ -46,12 +50,19 @@ const Expense = () => {
     }
     const editExpenseHandler = (expense,id)=>{
       console.log("edit called")
-      // let newExpenses = [...expense];
-      // let index = newExpenses.findIndex(data);
-      // newExpenses[index] = expense;
-      // setExpenses(newExpenses);
-      // dispatch(expenseActions.editExpense(expense));
-      axios.put(`https://expensetracker-b0ad6-default-rtdb.firebaseio.com/expense/${id}.json`,expense).then((res) => {
+      setItem(expense);
+      setId(id);
+      
+    }
+    const editExpenseHandler2=(oldExpense,newExpense,sendId)=>{
+      console.log(oldExpense)
+      let newExpenses = [...expenses];
+      console.log(newExpenses)
+      let index = newExpenses.findIndex((ele)=>ele=oldExpense);
+
+      newExpenses[index] = newExpense;
+      dispatch(expenseActions.editExpense(newExpenses));
+      axios.put(`https://expensetracker-b0ad6-default-rtdb.firebaseio.com/expense/${sendId}.json`,newExpense).then((res) => {
         if (res.ok) {
           console.log("Updated");
           return res.json();
@@ -74,10 +85,14 @@ const Expense = () => {
               <div className="col-12 col-md-9 col-lg-7 col-xl-6">
                 <div className="card" style={{ borderRadius: "15px" }}>
                   <div className="card-body p-5">
+                    {amount>=10000?<button>Activate Premium</button>:''}
                     <h2 className="text-uppercase text-center mb-5">
-                      Add Expense
+                      Expense
                     </h2>
-                    <ExpenseForm onAddExpense={addExpenseHandler}  onEditExpense={editExpenseHandler}/>
+                    <h3 className="text-uppercase text-center mb-5">
+                      Amount = {amount}
+                    </h3>
+                    <ExpenseForm onAddExpense={addExpenseHandler}  onEditExpense={editExpenseHandler2} expense={item} id={id}  />
                     <ul>
                     {expenses.map((expense)=>(
                         <ExpenseItems key={expense.desc} keys={keys} expense={expense} onDelete={deleteExpenseHandler} onEditExpense={editExpenseHandler}/>

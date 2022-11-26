@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialExpenseState = {
-        expenses:[]
+        expenses:[],
+        amount:0
     }
 
 const expenseSlice = createSlice({
@@ -9,30 +10,46 @@ const expenseSlice = createSlice({
     initialState:initialExpenseState,
     reducers:{
         setExpense(state,action){
+            const expenses = [...state.expenses,action.payload];
+            let amount=Number(0); 
+            expenses.forEach((expense)=>amount+=Number(expense.amount));
             return{
                 ...state,
-                expenses:[...state.expenses,action.payload]
+                expenses:expenses,
+                amount:amount
             }
         },
         addExpense(state,action){
+            const expenses = [...state.expenses,action.payload];
+            let amount=Number(0); 
+            expenses.forEach((expense)=>amount+=Number(expense.amount));
             return{
                 ...state,
-                expenses:[...state.expenses,action.payload]
+                expenses:expenses,
+                amount:amount
             }
         },
         deleteExpense(state,action){
+            const expenses = state.expenses.filter((ele)=>ele.desc!==action.payload.desc)
+            let amount=Number(0); 
+            expenses.forEach((expense)=>amount+=Number(expense.amount));
             return{
                 ...state,
-                expenses:state.expenses.filter((ele)=>ele.desc!==action.payload.desc)
+                expenses:expenses,
+                amount:amount
             }
 
         },
-        // editExpense(state,action){
-        //     return{
-        //         ...state,
-        //         expenses:
-        //     }
-        // }
+        editExpense(state,action){
+            const expenses = action.payload;
+            let amount=Number(0); 
+            expenses.forEach((expense)=>amount+=Number(expense.amount));
+            return{
+                ...state,
+                expenses:expenses,
+                amount:amount
+            }
+        }
     }
 })
 

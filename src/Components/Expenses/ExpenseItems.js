@@ -1,6 +1,5 @@
 import axios from 'axios';
 import React from 'react'
-import ExpenseForm from './ExpenseForm';
 
 const ExpenseItems = (props) => {
   const deleteExpenseHandler = (e)=>{
@@ -17,7 +16,7 @@ const ExpenseItems = (props) => {
     e.preventDefault();
     const id = Object.keys(props.keys).find(key => props.keys[key] === props.expense);
     props.onEditExpense(props.expense,id);
-    props.onDelete(props.expense);
+    // props.onDelete(props.expense);
   }
 
   return (

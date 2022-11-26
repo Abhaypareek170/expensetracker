@@ -6,6 +6,7 @@ import UpdateProfile from "./Components/UpdateProfile";
 import ForgotPassword from "./Components/Authantication/ForgotPassword";
 import Expense from "./Components/Expenses/Expense";
 import Protected from "./Components/Pages/Protected";
+import NotFound from "./Components/Pages/NotFound";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/updateProfile" element={<UpdateProfile/>}></Route>
         <Route path="/forgot-password" element={<ForgotPassword/>}></Route>
         <Route path="/expenses" element={<Protected Component={Expense}/>}></Route>
+        <Route path="*" element={<Protected Component={NotFound}/>}></Route>
       </Routes>
     </BrowserRouter>
   );
