@@ -4,6 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import ExpenseForm from "./ExpenseForm";
 import ExpenseItems from "./ExpenseItems";
 import { expenseActions } from "../../store/expenses";
+import Nav from "../Nav";
+import { themeActions } from "../../store/theme";
+import { CSVLink } from "react-csv";
 
 
 const Expense = () => {
@@ -13,6 +16,7 @@ const Expense = () => {
   const [id,setId]=useState();
   const expenses = useSelector(state=>state.expense.expenses);
   const amount = useSelector(state=>state.expense.amount);
+  const darkTheme = useSelector(state=>state.theme.darkMode)
 
     const fetchExpenses = async() =>{
       const res = await axios.get(`https://expensetracker-b0ad6-default-rtdb.firebaseio.com/expense.json`)
@@ -54,6 +58,12 @@ const Expense = () => {
       setId(id);
       
     }
+    const premimumModeHandler = (e)=>{
+      e.preventDefault();
+      dispatch(themeActions.changeMode());
+
+    }
+
     const editExpenseHandler2=(oldExpense,newExpense,sendId)=>{
       console.log(oldExpense)
       let newExpenses = [...expenses];
@@ -71,8 +81,13 @@ const Expense = () => {
             throw new Error(err);
           });
     }
+    const data = (arr)=>{
+      return arr.map((ele)=>ele=[ele.amount,ele.cat,ele.desc])
+    }
+    const csvData = [["Amount","Category","Description"]].concat(data(expenses));
   return (
     <>
+    <Nav/>
       <section
         className="vh-100 bg-image"
         style={{
@@ -85,7 +100,8 @@ const Expense = () => {
               <div className="col-12 col-md-9 col-lg-7 col-xl-6">
                 <div className="card" style={{ borderRadius: "15px" }}>
                   <div className="card-body p-5">
-                    {amount>=10000?<button>Activate Premium</button>:''}
+                    {amount>=10000 && <button onClick={premimumModeHandler} >{darkTheme?"LightMode":"Premium Mode"}</button>} 
+                    <CSVLink data={csvData}>Download Expense</CSVLink>
                     <h2 className="text-uppercase text-center mb-5">
                       Expense
                     </h2>
@@ -95,7 +111,7 @@ const Expense = () => {
                     <ExpenseForm onAddExpense={addExpenseHandler}  onEditExpense={editExpenseHandler2} expense={item} id={id}  />
                     <ul>
                     {expenses.map((expense)=>(
-                        <ExpenseItems key={expense.desc} keys={keys} expense={expense} onDelete={deleteExpenseHandler} onEditExpense={editExpenseHandler}/>
+                        <ExpenseItems key={Math.random()} keys={keys} expense={expense} onDelete={deleteExpenseHandler} onEditExpense={editExpenseHandler}/>
                     ))}
                     </ul>
                   </div>
