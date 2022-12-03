@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux";
 import {  useNavigate } from "react-router-dom";
-import { authActions } from "../store/auth";
+import { authActions } from "../../store/auth";
 const Nav = () => {
     const darkMode = useSelector(state=>state.theme.darkMode)
     let darkClass; 

@@ -1,8 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { darkTheme } from "./Theme";
-import { lightTheme } from "./Theme";
-import Nav from "./Nav";
+import { darkTheme } from "../UI/Theme";
+import { lightTheme } from "../UI/Theme";
+import Nav from "../UI/Nav";
 
 
 const Home = () => {

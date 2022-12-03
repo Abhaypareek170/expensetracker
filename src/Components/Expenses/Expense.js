@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ExpenseForm from "./ExpenseForm";
 import ExpenseItems from "./ExpenseItems";
 import { expenseActions } from "../../store/expenses";
-import Nav from "../Nav";
+import Nav from "../UI/Nav";
 import { themeActions } from "../../store/theme";
 import { CSVLink } from "react-csv";
 
