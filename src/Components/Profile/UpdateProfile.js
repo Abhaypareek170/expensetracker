@@ -5,7 +5,7 @@ import UpdateForm from "./UpdateForm";
 const UpdateProfile = () => {
   return (
     <>
-      <div style={{display:'flex',justifyContent:'space-between'}}>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
         <span>
           <i>
             <b>Welcome to Expense Tracker</b>
@@ -16,7 +16,7 @@ const UpdateProfile = () => {
         </span>
       </div>
       <hr />
-      <UpdateForm/>
+      <UpdateForm />
     </>
   );
 };
