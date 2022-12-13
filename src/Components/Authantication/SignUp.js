@@ -14,7 +14,7 @@ const AuthForm = () => {
     const enteredPassword = passwordInputRef.current.value;
     setIsSending(true);
     fetch(
-      "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDPexDNdjOMbM7eoDYU1-DP6ytLvuzTifQ",
+      "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDasGxhB1lnE8zbjWa8tOH6AzKudRCa8d4",
       {
         method: "POST",
         body: JSON.stringify({

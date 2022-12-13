@@ -1,5 +1,4 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ExpenseForm from "./ExpenseForm";
 import ExpenseItems from "./ExpenseItems";
@@ -7,38 +6,22 @@ import { expenseActions } from "../../store/expenses";
 import Nav from "../UI/Nav";
 import { themeActions } from "../../store/theme";
 import { CSVLink } from "react-csv";
+import axios from "axios";
 
-const Expense = () => {
+const Expense = (props) => {
   const [item, setItem] = useState();
   const dispatch = useDispatch();
-  const [keys, setKeys] = useState();
   const [id, setId] = useState();
+  const user = useSelector(state=>state.auth.user);
   const expenses = useSelector((state) => state.expense.expenses);
   const amount = useSelector((state) => state.expense.amount);
   const darkTheme = useSelector((state) => state.theme.darkMode);
-
-  const fetchExpenses = async () => {
-    const res = await axios
-      .get(
-        `https://expensetracker-b0ad6-default-rtdb.firebaseio.com/expense.json`
-      )
-      .catch((err) => {
-        console.log(err);
-      });
-    setKeys(res.data);
-    Object.values(res.data).forEach((val) => {
-      dispatch(expenseActions.setExpense(val));
-    });
-  };
-  useEffect(() => {
-    fetchExpenses();
-  }, []);
 
   const addExpenseHandler = (expense) => {
     dispatch(expenseActions.addExpense(expense));
     axios
       .post(
-        "https://expensetracker-b0ad6-default-rtdb.firebaseio.com/expense.json",
+        `https://expense-tracker-dc29e-default-rtdb.firebaseio.com/expense/${user}.json`,
         expense
       )
 
@@ -76,7 +59,7 @@ const Expense = () => {
     dispatch(expenseActions.editExpense(newExpenses));
     axios
       .put(
-        `https://expensetracker-b0ad6-default-rtdb.firebaseio.com/expense/${sendId}.json`,
+        `https://expense-tracker-dc29e-default-rtdb.firebaseio.com/expense/${user}/${sendId}.json`,
         newExpense
       )
       .then((res) => {
@@ -130,7 +113,7 @@ const Expense = () => {
                       {expenses.map((expense) => (
                         <ExpenseItems
                           key={Math.random()}
-                          keys={keys}
+                          keys={props.keys}
                           expense={expense}
                           onDelete={deleteExpenseHandler}
                           onEditExpense={editExpenseHandler}

@@ -12,7 +12,7 @@ const UpdateProfile = () => {
           </i>
         </span>
         <span>
-          Your profile is incomplete.<Link>Complete now</Link>
+        <Link to='/'>Back to Home</Link>
         </span>
       </div>
       <hr />

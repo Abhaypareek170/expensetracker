@@ -13,7 +13,7 @@ const Home = () => {
   const emailVerificationHandler = (e) => {
     e.preventDefault();
     fetch(
-      "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyDPexDNdjOMbM7eoDYU1-DP6ytLvuzTifQ",
+      "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyDasGxhB1lnE8zbjWa8tOH6AzKudRCa8d4",
       {
         method: "POST",
         body: JSON.stringify({

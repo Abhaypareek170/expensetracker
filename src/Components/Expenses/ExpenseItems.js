@@ -1,7 +1,9 @@
 import axios from "axios";
 import React from "react";
+import { useSelector } from "react-redux";
 
 const ExpenseItems = (props) => {
+  const user = useSelector(state=>state.auth.user);
   const deleteExpenseHandler = (e) => {
     e.preventDefault();
     const id = Object.keys(props.keys).find(
@@ -10,7 +12,7 @@ const ExpenseItems = (props) => {
 
     axios
       .delete(
-        `https://expensetracker-b0ad6-default-rtdb.firebaseio.com/expense/${id}.json`
+        `https://expense-tracker-dc29e-default-rtdb.firebaseio.com/expense/${user}/${id}.json`
       )
       .then(() => console.log("Deleted Successfully"))
       .catch((err) => console.log(err));

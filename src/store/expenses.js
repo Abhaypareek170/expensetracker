@@ -51,6 +51,10 @@ const expenseSlice = createSlice({
         amount: amount,
       };
     },
+    onlogout(state){
+      state.expenses = []
+      state.amount = 0
+    }
   },
 });
 

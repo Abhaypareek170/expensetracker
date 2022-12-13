@@ -18,7 +18,7 @@ const AuthForm = () => {
     setIsSending(true);
 
     fetch(
-      "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDPexDNdjOMbM7eoDYU1-DP6ytLvuzTifQ",
+      "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDasGxhB1lnE8zbjWa8tOH6AzKudRCa8d4",
       {
         method: "POST",
         body: JSON.stringify({
@@ -44,8 +44,10 @@ const AuthForm = () => {
         }
       })
       .then((data) => {
+        let user = enteredEmail.replace(/[^a-zA-Z0-9]/g, "").toString();
         localStorage.setItem("token", data.idToken);
-        dispatch(authActions.login(data.idToken));
+        dispatch(authActions.login({token:data.idToken,user:user}));
+        localStorage.setItem("user",user)
         navigate("/");
       })
       .catch((err) => alert(err.message));

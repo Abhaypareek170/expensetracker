@@ -13,7 +13,7 @@ const Protected = (props) => {
   });
   return (
     <>
-      <Component />
+      <Component keys={props.keys}/>
     </>
   );
 };

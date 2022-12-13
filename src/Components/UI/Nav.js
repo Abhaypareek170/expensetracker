@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { authActions } from "../../store/auth";
+import { expenseActions } from "../../store/expenses";
 const Nav = () => {
   const darkMode = useSelector((state) => state.theme.darkMode);
   let darkClass;
@@ -14,7 +15,9 @@ const Nav = () => {
   const logoutHandler = (e) => {
     e.preventDefault();
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     dispatch(authActions.logout());
+    dispatch(expenseActions.onlogout());
     navigate("/login");
   };
   return (
