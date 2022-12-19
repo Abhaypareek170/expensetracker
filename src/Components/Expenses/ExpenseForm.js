@@ -29,6 +29,7 @@ const ExpenseForm = (props) => {
     setAmountInput("");
     setCatInput("");
     setDescInput("");
+    setButton("Add Expense")
   };
   return (
     <form>
