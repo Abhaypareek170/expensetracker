@@ -12,7 +12,7 @@ const ExpenseItems = (props) => {
 
     axios
       .delete(
-        `https://expense-tracker-dc29e-default-rtdb.firebaseio.com/expense/${user}/${id}.json`
+        `https://expense-tracker-98a5e-default-rtdb.firebaseio.com/expense/${user}/${id}.json`
       )
       .then(() => console.log("Deleted Successfully"))
       .catch((err) => console.log(err));
