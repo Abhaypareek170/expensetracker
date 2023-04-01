@@ -21,7 +21,7 @@ const Expense = (props) => {
     dispatch(expenseActions.addExpense(expense));
     axios
       .post(
-        `https://expense-tracker-98a5e-default-rtdb.firebaseio.com/expense/${user}.json`,
+        `https://expense-fe5b3-default-rtdb.firebaseio.com/expense/${user}.json`,
         expense
       )
 
@@ -59,7 +59,7 @@ const Expense = (props) => {
     dispatch(expenseActions.editExpense(newExpenses));
     axios
       .put(
-        `https://expense-tracker-98a5e-default-rtdb.firebaseio.com/expense/${user}/${sendId}.json`,
+        `https://expense-fe5b3-default-rtdb.firebaseio.com/expense/${user}/${sendId}.json`,
         newExpense
       )
       .then((res) => {
